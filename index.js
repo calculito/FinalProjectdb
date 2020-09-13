@@ -100,7 +100,7 @@ app.get("/userlinks/:id", function (req, res) {
   }
   pool
     .query(
-      "select l.description from class c inner join links l on c.id = l.class_id where class_id=$1 ORDER BY l.id DESC;",
+      "select l.description, l.id, stars from class c inner join links l on c.id = l.class_id where class_id=$1 ORDER BY l.id DESC;",
       [idL]
     )
     .then((result) => res.json(result.rows))
@@ -114,7 +114,7 @@ app.get("/userpersonallinks/:id", function (req, res) {
   }
   pool
     .query(
-      "select description, name from perslinks p inner join users u on u.id = p.user_id where name=$1 ORDER BY p.id DESC;",
+      "select description, name, p.id, stars from perslinks p inner join users u on u.id = p.user_id where name=$1 ORDER BY p.id DESC;",
       [username]
     )
     .then((result) => res.json(result.rows))
@@ -142,7 +142,7 @@ app.get("/userhomeworksSYES/:id", function (req, res) {
   }
   pool
     .query(
-      "select name, h2.link , hf.finished  from users u inner join homework_finished hf on hf.user_id = u.id inner join homeworks h2 on h2.id = hf.homeworks_id where finished='yes' and  u.name=$1;",
+      "select name, h2.link , hf.finished, linkhwfinished  from users u inner join homework_finished hf on hf.user_id = u.id inner join homeworks h2 on h2.id = hf.homeworks_id where finished='yes' and  u.name=$1;",
       [username]
     )
     .then((result) => res.json(result.rows))
@@ -246,6 +246,35 @@ app.post("/posthomework/:classId", function (req, res) {
       newhomework,
     ])
     .then(() => res.status(200).send("new homework set"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
+//////////////  DELETE GENERAL LINK    ////////////
+app.delete("/deletegenlink", function (req, res) {
+  const linkdescription = req.body.link;
+  pool
+    .query("DELETE FROM links WHERE id = $1", [linkdescription])
+    .then(() => res.send(`Link ${linkdescription} deleted!`))
+    .catch((e) => res.status(400).send("The link can't be deleted!"));
+});
+//////////////  DELETE PERSONAL LINK    ////////////
+app.delete("/deletepersonallink", function (req, res) {
+  const linkdescription = req.body.link;
+  pool
+    .query("DELETE FROM perslinks WHERE id = $1", [linkdescription])
+    .then(() => res.send(`Link ${linkdescription} deleted!`))
+    .catch((e) => res.status(400).send("The link can't be deleted!"));
+});
+///////////  CHANGE STARS PERSONAL LINKS     /////////////////
+app.put("/personallinkstars/:linkId", function (req, res) {
+  let linkId = req.params.linkId;
+  const numberStars = req.body.link;
+
+  pool
+    .query("UPDATE perslinks SET stars = $2 WHERE id=$1", [linkId, numberStars])
+    .then(() => res.status(200).send("Stars updated"))
     .catch((error) => {
       console.log(error);
       res.status(500).send("something went wrong :( ...");
