@@ -179,7 +179,7 @@ app.get("/userhomeworksALL/:id", function (req, res) {
   }
   pool
     .query(
-      "select h.id,h.optional, h.link, u2.name, u2.user_role, (select hf.finished from   homework_finished hf inner join homeworks h2 on hf.homeworks_id = h2.id inner join users u on u.id = hf.user_id where u.id = u2.id and h2.id = h.id ), (select hf.linkhwfinished from   homework_finished hf inner join homeworks h2 on hf.homeworks_id = h2.id inner join users u on u.id = hf.user_id where u.id = u2.id and h2.id = h.id ) from   homeworks h inner join class c2 on c2.id = h.class_id inner join users u2 on c2.id = u2.class_id where c2.id = $1 and u2.user_role = 'Student' ORDER BY h.id DESC;",
+      "select h.id,h.optional, h.link, u2.name, u2.user_role, (select hf.finished from   homework_finished hf inner join homeworks h2 on hf.homeworks_id = h2.id inner join users u on u.id = hf.user_id where u.id = u2.id and h2.id = h.id ), (select hf.hammer from   homework_finished hf inner join homeworks h2 on hf.homeworks_id = h2.id inner join users u on u.id = hf.user_id where u.id = u2.id and h2.id = h.id ), (select hf.linkhwfinished from   homework_finished hf inner join homeworks h2 on hf.homeworks_id = h2.id inner join users u on u.id = hf.user_id where u.id = u2.id and h2.id = h.id ) from   homeworks h inner join class c2 on c2.id = h.class_id inner join users u2 on c2.id = u2.class_id where c2.id = $1 and u2.user_role = 'Student' ORDER BY h.id DESC, u2.name ASC;",
       [userclass]
     )
     .then((result) => res.json(result.rows))
@@ -209,6 +209,23 @@ app.put("/homeworkfinishedlink/:homeworkId", function (req, res) {
   pool
     .query(
       "UPDATE homework_finished SET linkhwfinished = $2 WHERE homeworks_id=$1 AND user_id=$3",
+      [homeworkId, linkToHomework, userId]
+    )
+    .then(() => res.status(200).send("link to homework updated"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
+///////////  CHANGE LINK FINISHED HOMEWORK AFTER SUBMIT  /////////////////
+app.put("/homeworkfinishedlinkafter/:homeworkId", function (req, res) {
+  let homeworkId = req.params.homeworkId;
+  const linkToHomework = req.body.link;
+  const userId = req.body.userId;
+
+  pool
+    .query(
+      "UPDATE homework_finished SET linkhwfinished = $2 WHERE id=$1 AND user_id=$3",
       [homeworkId, linkToHomework, userId]
     )
     .then(() => res.status(200).send("link to homework updated"))
