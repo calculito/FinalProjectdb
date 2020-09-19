@@ -26,7 +26,7 @@ const getlinks = () => {
     });
   });
 };
-const getuserrole = () => {
+const getuserclassname = () => {
   return new Promise(function (resolve, reject) {
     pool.query(
       "SELECT class_name, users.name, users.user_role  FROM class INNER JOIN users ON class.id=users.class_id;",
@@ -87,6 +87,6 @@ module.exports = {
   createuser,
   deleteuser,
   getlinks,
-  getuserrole,
+  getuserclassname,
   getuserrecordings,
 };

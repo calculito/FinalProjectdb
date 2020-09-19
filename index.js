@@ -56,10 +56,17 @@ app.get("/", (req, res) => {
       res.status(500).send(error);
     });
 });
-//get all the links general NOT IN USE!!!!
-app.get("/links", (req, res) => {
+//get class for changing the class instructor
+app.get("/class", (req, res) => {
+  pool
+    .query("select * from class order by class_name asc")
+    .then((result) => res.json(result.rows))
+    .catch((e) => console.error(e));
+});
+//get the userrole
+app.get("/userclassname", (req, res) => {
   user_model
-    .getlinks()
+    .getuserclassname()
     .then((response) => {
       res.status(200).send(response);
     })
@@ -67,15 +74,17 @@ app.get("/links", (req, res) => {
       res.status(500).send(error);
     });
 });
-//get the userrole
-app.get("/userrole", (req, res) => {
-  user_model
-    .getuserrole()
-    .then((response) => {
-      res.status(200).send(response);
-    })
+///////////  CHANGE CLASS FOR INSTRUCTORS /////////////////
+app.put("/switchclass/:userId", function (req, res) {
+  let userId = req.params.userId;
+  const classId = req.body.classId;
+
+  pool
+    .query("UPDATE users SET class_id = $2 WHERE id=$1", [userId, classId])
+    .then(() => res.status(200).send("homework optional updated"))
     .catch((error) => {
-      res.status(500).send(error);
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
     });
 });
 //get the recordings by id
@@ -142,7 +151,7 @@ app.get("/userhomeworksSYES/:id", function (req, res) {
   }
   pool
     .query(
-      "select name, h2.link, h2.optional, hf.finished, linkhwfinished  from users u inner join homework_finished hf on hf.user_id = u.id inner join homeworks h2 on h2.id = hf.homeworks_id where finished='yes' and  u.name=$1;",
+      "select name, hf.id, h2.link, h2.optional, hf.finished, linkhwfinished, hammer  from users u inner join homework_finished hf on hf.user_id = u.id inner join homeworks h2 on h2.id = hf.homeworks_id where finished='yes' and  u.name=$1 order by id asc;",
       [username]
     )
     .then((result) => res.json(result.rows))
@@ -196,7 +205,7 @@ app.put("/homeworkfinishedlink/:homeworkId", function (req, res) {
   let homeworkId = req.params.homeworkId;
   const linkToHomework = req.body.link;
   const userId = req.body.userId;
-  console.log(linkToHomework);
+
   pool
     .query(
       "UPDATE homework_finished SET linkhwfinished = $2 WHERE homeworks_id=$1 AND user_id=$3",
@@ -305,6 +314,22 @@ app.put("/generallinkstars/:linkId", function (req, res) {
 
   pool
     .query("UPDATE links SET stars = $2 WHERE id=$1", [linkId, numberStars])
+    .then(() => res.status(200).send("Stars updated"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
+///////////  CHANGE HAMMER HOMEWORK FINISHED FOR STUDENTS    /////////////////
+app.put("/hammerstudents/:hwId", function (req, res) {
+  let hwId = req.params.hwId;
+  const numberHammer = req.body.numberHammer;
+
+  pool
+    .query("UPDATE homework_finished SET hammer = $2 WHERE id=$1", [
+      hwId,
+      numberHammer,
+    ])
     .then(() => res.status(200).send("Stars updated"))
     .catch((error) => {
       console.log(error);
