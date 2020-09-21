@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 const morgan = require("morgan"); //logs all the changes
@@ -181,6 +181,19 @@ app.get("/userhomeworksALL/:id", function (req, res) {
     .query(
       "select h.id,h.optional, h.link, u2.name, u2.user_role, (select hf.finished from   homework_finished hf inner join homeworks h2 on hf.homeworks_id = h2.id inner join users u on u.id = hf.user_id where u.id = u2.id and h2.id = h.id ), (select hf.hammer from   homework_finished hf inner join homeworks h2 on hf.homeworks_id = h2.id inner join users u on u.id = hf.user_id where u.id = u2.id and h2.id = h.id ), (select hf.linkhwfinished from   homework_finished hf inner join homeworks h2 on hf.homeworks_id = h2.id inner join users u on u.id = hf.user_id where u.id = u2.id and h2.id = h.id ) from   homeworks h inner join class c2 on c2.id = h.class_id inner join users u2 on c2.id = u2.class_id where c2.id = $1 and u2.user_role = 'Student' ORDER BY h.id DESC, u2.name ASC;",
       [userclass]
+    )
+    .then((result) => res.json(result.rows))
+    .catch((e) => console.error(e));
+});
+/////////////   get userhomeworks  hammer --> only for Instructors      ////////////////
+app.get("/userhomeworksALLHammer", function (req, res) {
+  const userclass = req.params.id;
+  if (userclass == 0 || userclass == "") {
+    return res.status(400).send("Please log in!");
+  }
+  pool
+    .query(
+      "select h.link , AVG(hammer)FROM homework_finished hf inner join homeworks h on h.id = hf.homeworks_id group by h.id;"
     )
     .then((result) => res.json(result.rows))
     .catch((e) => console.error(e));
