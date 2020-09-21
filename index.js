@@ -19,7 +19,7 @@ const user_model = require("./user_model");
 app.use(function (req, res, next) {
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://migradashy.herokuapp.com/"
+    "https://migradashy.herokuapp.com"
   );
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader(
