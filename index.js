@@ -62,7 +62,7 @@ app.get("/", (req, res) => {
 //get class for changing the class instructor
 app.get("/class", (req, res) => {
   pool
-    .query("select * from class order by class_name asc")
+    .query("select * from class order by id asc")
     .then((result) => res.json(result.rows))
     .catch((e) => console.error(e));
 });
