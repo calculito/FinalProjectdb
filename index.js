@@ -19,7 +19,9 @@ const user_model = require("./user_model");
 app.use(function (req, res, next) {
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://migradashy.herokuapp.com"
+    "https://migradashy.herokuapp.com",
+    "http://localhost:3000",
+    "http://migradashy.herokuapp.com"
   );
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader(
@@ -62,7 +64,7 @@ app.get("/", (req, res) => {
 //get class for changing the class instructor
 app.get("/class", (req, res) => {
   pool
-    .query("select * from class order by id asc")
+    .query("select * from class order by class_name asc")
     .then((result) => res.json(result.rows))
     .catch((e) => console.error(e));
 });
