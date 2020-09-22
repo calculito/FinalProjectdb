@@ -29,7 +29,7 @@ const getlinks = () => {
 const getuserclassname = () => {
   return new Promise(function (resolve, reject) {
     pool.query(
-      "SELECT users.name, class_name  FROM class INNER JOIN users ON class.id=users.class_id;",
+      "SELECT class.id, class_name  FROM class INNER JOIN users ON class.id=users.class_id;",
       (error, results) => {
         if (error) {
           reject(error);
