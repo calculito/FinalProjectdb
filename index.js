@@ -16,13 +16,18 @@ const pool = new Pool({
 //app.use(express.urlencoded({ extended: true }));
 //app.use(express.json());
 const user_model = require("./user_model");
-app.use(function (req, res, next) {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
+
+app.use((req, res, next) => {
+  const allowedOrigins = [
     "https://migradashy.herokuapp.com",
     "http://localhost:3000",
-    "http://migradashy.herokuapp.com"
-  );
+    "http://migradashy.herokuapp.com",
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -30,8 +35,27 @@ app.use(function (req, res, next) {
     "Content-Type",
     "application/json"
   );
-  next();
+
+  return next();
 });
+
+//app.use(function (req, res, next) {
+//  res.setHeader(
+//    "Access-Control-Allow-Origin",
+//    "https://migradashy.herokuapp.com",
+//    "http://localhost:3000",
+//    "http://migradashy.herokuapp.com"
+//  );
+//  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+//  res.setHeader(
+//    "Access-Control-Allow-Headers",
+//    "Content-Type, Access-Control-Allow-Headers",
+//    "Content-Type",
+//   "application/json"
+// );
+//  next();
+//});
+
 // LOG ALL REQUEST
 app.use(morgan("tiny"));
 
