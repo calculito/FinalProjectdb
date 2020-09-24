@@ -166,7 +166,7 @@ app.get("/usercalendar/:id", function (req, res) {
   }
   pool
     .query(
-      "select title, tdate, tstart, tend from classes where class_id = $1 order by tdate asc",
+      "select title, tdate::date, tstart, tend from classes where class_id = $1 order by tdate asc",
       [userclass]
     )
     .then((result) => res.json(result.rows))
