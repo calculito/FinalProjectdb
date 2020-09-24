@@ -222,7 +222,7 @@ app.get("/userhomeworksALLHammer", function (req, res) {
   }
   pool
     .query(
-      "select h.id , AVG(hammer)FROM homework_finished hf inner join homeworks h on h.id = hf.homeworks_id group by h.id;"
+      "select h.id , AVG(hammer)::numeric(10,2) FROM homework_finished hf inner join homeworks h on h.id = hf.homeworks_id group by h.id;"
     )
     .then((result) => res.json(result.rows))
     .catch((e) => console.error(e));
