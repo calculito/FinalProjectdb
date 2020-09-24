@@ -292,6 +292,22 @@ app.put("/homeworkoptional/:homeworkId", function (req, res) {
       res.status(500).send("something went wrong :( ...");
     });
 });
+///////////  CREATE NEW APPOINTMENT ADMIN  /////////////////
+app.post("/postappointment/:classId", function (req, res) {
+  let classId = req.params.classId;
+  const title = req.body.title;
+  const date = req.body.date;
+  pool
+    .query(
+      "insert into classes (class_id , title , tdate ) values ($1, $2, $3)",
+      [classId, title, date]
+    )
+    .then(() => res.status(200).send("new appointment set"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
 ///////////  INSERT NEW PERSONAL LINK  /////////////////
 app.post("/postpersonallink/:userId", function (req, res) {
   let userId = req.params.userId;
