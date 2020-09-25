@@ -290,7 +290,7 @@ app.put("/homeworkevaluation/:answer", function (req, res) {
   const homeworkId = req.body.hwToCheckId;
   const hwEvaluation = req.params.answer;
   pool
-    .query("UPDATE homework_finish SET validation = $2 WHERE id=$1", [
+    .query("UPDATE homework_finished SET validation = $2 WHERE id=$1", [
       homeworkId,
       hwEvaluation,
     ])
