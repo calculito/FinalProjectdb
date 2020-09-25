@@ -173,7 +173,7 @@ app.get("/userhomeworksSYES/:id", function (req, res) {
   }
   pool
     .query(
-      "select name, hf.id, h2.link, h2.optional, hf.finished, linkhwfinished, hammer  from users u inner join homework_finished hf on hf.user_id = u.id inner join homeworks h2 on h2.id = hf.homeworks_id where finished='yes' and  u.name=$1 order by id asc;",
+      "select name, hf.id, h2.link, h2.optional, hf.finished, linkhwfinished, hammer, validation  from users u inner join homework_finished hf on hf.user_id = u.id inner join homeworks h2 on h2.id = hf.homeworks_id where finished='yes' and  u.name=$1 order by id asc;",
       [username]
     )
     .then((result) => res.json(result.rows))
