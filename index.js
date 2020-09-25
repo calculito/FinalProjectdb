@@ -56,10 +56,21 @@ app.get("/usersION", function (req, res) {
     res.json(result.rows);
   });
 });
-//get all info users for name, class, role
+//get all info users for name
 app.get("/", (req, res) => {
   user_model
     .getusers()
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+//get all info users for name, class, role
+app.get("/alld", (req, res) => {
+  user_model
+    .getusersalldata()
     .then((response) => {
       res.status(200).send(response);
     })

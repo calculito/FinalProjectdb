@@ -16,6 +16,16 @@ const getusers = () => {
     });
   });
 };
+const getusersalldata = () => {
+  return new Promise(function (resolve, reject) {
+    pool.query("SELECT * FROM users ORDER BY id ASC", (error, results) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(results.rows);
+    });
+  });
+};
 const getlinks = () => {
   return new Promise(function (resolve, reject) {
     pool.query("SELECT * FROM links ORDER BY id ASC", (error, results) => {
@@ -84,6 +94,7 @@ const deleteuser = () => {
 
 module.exports = {
   getusers,
+  getusersalldata,
   createuser,
   deleteuser,
   getlinks,
