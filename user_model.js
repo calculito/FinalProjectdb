@@ -8,7 +8,7 @@ const pool = new Pool({
 });
 const getusers = () => {
   return new Promise(function (resolve, reject) {
-    pool.query("SELECT * FROM users ORDER BY id ASC", (error, results) => {
+    pool.query("SELECT name FROM users ORDER BY id ASC", (error, results) => {
       if (error) {
         reject(error);
       }

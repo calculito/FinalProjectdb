@@ -39,24 +39,6 @@ app.use((req, res, next) => {
   return next();
 });
 
-//app.use(function (req, res, next) {
-//  res.setHeader(
-//    "Access-Control-Allow-Origin",
-//    "https://migradashy.herokuapp.com",
-//    "http://localhost:3000",
-//    "http://migradashy.herokuapp.com"
-//  );
-//  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
-//  res.setHeader(
-//    "Access-Control-Allow-Headers",
-//    "Content-Type, Access-Control-Allow-Headers",
-//    "Content-Type",
-//   "application/json"
-// );
-//  next();
-//});
-
-// LOG ALL REQUEST
 app.use(morgan("tiny"));
 
 app.get("/us", (req, res) => {
