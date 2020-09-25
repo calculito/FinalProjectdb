@@ -286,13 +286,13 @@ app.put("/homeworkoptional/:homeworkId", function (req, res) {
     });
 });
 ///////////  CHANGE HOMEWORK EVALUATION /////////////////
-app.put("/homeworkevaluation/:answer", function (req, res) {
-  const homeworkId = req.body.hwToCheckId;
-  const hwEvaluation = req.params.answer;
+app.put("/homeworkevaluation/:id", function (req, res) {
+  const homeworkId = req.params.id;
+  const hwEvaluation = req.body.answer;
   pool
-    .query("UPDATE homework_finished SET validation = $2 WHERE id=$1", [
-      homeworkId,
+    .query("UPDATE homework_finished SET validation = $1 WHERE id=$2", [
       hwEvaluation,
+      homeworkId,
     ])
     .then(() => res.status(200).send("homework optional updated"))
     .catch((error) => {
