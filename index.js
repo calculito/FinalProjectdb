@@ -346,6 +346,23 @@ app.post("/posthomework/:classId", function (req, res) {
       res.status(500).send("something went wrong :( ...");
     });
 });
+///////////  INSERT NEW RECORDING AS ADMIN /////////////////
+app.post("/postrecording/:classId", function (req, res) {
+  let classid = req.params.classId;
+  const newrecordinglink = req.body.link;
+  const newrecordingtitle = req.body.title;
+  const newrecordingkeyword = req.body.keyword;
+  pool
+    .query(
+      "insert into recordings (class_id, link, title, keyword) values ($1, $2, $3, $4)",
+      [classid, newrecordinglink, newrecordingtitle, newrecordingkeyword]
+    )
+    .then(() => res.status(200).send("new recording set"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
 //////////////  DELETE GENERAL LINK    ////////////
 app.delete("/deletegenlink", function (req, res) {
   const linkdescription = req.body.link;
