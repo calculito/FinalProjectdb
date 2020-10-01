@@ -56,7 +56,7 @@ app.get("/usersION", function (req, res) {
     res.json(result.rows);
   });
 });
-//get all info users for name
+////////////  get all info users for name  /////////////
 app.get("/", (req, res) => {
   user_model
     .getusers()
@@ -67,7 +67,7 @@ app.get("/", (req, res) => {
       res.status(500).send(error);
     });
 });
-//get all info users for name, class, role
+////////////  get all info users for name, class, role  ///////////////
 app.get("/alld", (req, res) => {
   user_model
     .getusersalldata()
@@ -78,14 +78,14 @@ app.get("/alld", (req, res) => {
       res.status(500).send(error);
     });
 });
-//get class for changing the class instructor
+/////////////  get class for changing the class instructor  ////////////////
 app.get("/class", (req, res) => {
   pool
     .query("select * from class order by class_name asc")
     .then((result) => res.json(result.rows))
     .catch((e) => console.error(e));
 });
-//get the userrole
+/////////////   get the userrole   /////////////////
 app.get("/userclassname", (req, res) => {
   user_model
     .getuserclassname()
@@ -109,7 +109,7 @@ app.put("/switchclass/:userId", function (req, res) {
       res.status(500).send("something went wrong :( ...");
     });
 });
-//get the recordings by id
+///////////////   get the recordings by id   ///////////////////
 app.get("/userrecordings/:id", function (req, res) {
   const idR = req.params.id;
   if (idR == 0 || idR == "") {
@@ -123,7 +123,7 @@ app.get("/userrecordings/:id", function (req, res) {
     .then((result) => res.json(result.rows))
     .catch((e) => console.error(e));
 });
-//get userlinks by id --> only general links
+////////////////  get userlinks by id --> only general links  //////////////////
 app.get("/userlinks/:id", function (req, res) {
   const idL = req.params.id;
   if (idL == 0 || idL == "") {
@@ -321,14 +321,24 @@ app.post("/postpersonallink/:userId", function (req, res) {
   let userId = req.params.userId;
   const personallink = req.body.link;
   pool
-    .query("insert into perslinks (user_id, description) values ($1, $2)", [
-      userId,
-      personallink,
-    ])
-    .then(() => res.status(200).send("new personal link set"))
-    .catch((error) => {
-      console.log(error);
-      res.status(500).send("something went wrong :( ...");
+    .query("select * from perslinks where description=$1", [personallink])
+    .then((result) => {
+      if (result.rowCount.length > 0) {
+        return res
+          .status(400)
+          .send("A link with this description already exists!");
+      } else {
+        pool
+          .query(
+            "insert into perslinks (user_id, description) values ($1, $2)",
+            [userId, personallink]
+          )
+          .then(() => res.status(200).send("new personal link set"))
+          .catch((error) => {
+            console.log(error);
+            res.status(500).send("something went wrong :( ...");
+          });
+      }
     });
 });
 ///////////  INSERT NEW GENERAL LINK  /////////////////
