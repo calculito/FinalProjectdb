@@ -18,12 +18,15 @@ const getusers = () => {
 };
 const getusersalldata = () => {
   return new Promise(function (resolve, reject) {
-    pool.query("SELECT * FROM users ORDER BY id ASC", (error, results) => {
-      if (error) {
-        reject(error);
+    pool.query(
+      "SELECT * FROM users inner join class on class_id=class.id ORDER BY class_name, user_role, name asc",
+      (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(results.rows);
       }
-      resolve(results.rows);
-    });
+    );
   });
 };
 const getlinks = () => {
