@@ -321,7 +321,10 @@ app.post("/postpersonallink/:userId", function (req, res) {
   let userId = req.params.userId;
   const personallink = req.body.link;
   pool
-    .query("select * from perslinks where description=$1", [personallink])
+    .query("select * from perslinks where description=$1 and user_id=$2", [
+      personallink,
+      userId,
+    ])
     .then((result) => {
       if (result.rowCount.length > 0) {
         return res
