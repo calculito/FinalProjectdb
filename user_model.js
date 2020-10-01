@@ -19,7 +19,7 @@ const getusers = () => {
 const getusersalldata = () => {
   return new Promise(function (resolve, reject) {
     pool.query(
-      "SELECT * FROM users inner join class on class_id=class.id ORDER BY class_name, user_role, name asc",
+      "SELECT users.id, name, class_id, user_password, user_role, class_name FROM users inner join class on class_id=class.id ORDER BY class_name, user_role, name asc",
       (error, results) => {
         if (error) {
           reject(error);
