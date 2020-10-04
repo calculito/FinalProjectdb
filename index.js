@@ -461,6 +461,21 @@ app.post("/setnewclass/:className", function (req, res) {
       res.status(500).send("something went wrong :( ...");
     });
 });
+///////////  INSERT NEW USER /////////////////
+app.post("/setnewclass/:userName", function (req, res) {
+  let userName = req.params.userName;
+
+  pool
+    .query(
+      "insert into users (name, class_id, user_password, user_role) values ($1, 6, $1, 'Instructor')",
+      [userName]
+    )
+    .then(() => res.status(200).send("new user set"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
 //////////////   POST    ////////////////
 app.post("/user", (req, res) => {
   user_model
