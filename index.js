@@ -462,7 +462,7 @@ app.post("/setnewclass/:className", function (req, res) {
     });
 });
 ///////////  INSERT NEW USER /////////////////
-app.post("/setnewclass/:userName", function (req, res) {
+app.post("/setnewuser/:userName", function (req, res) {
   let userName = req.params.userName;
 
   pool
