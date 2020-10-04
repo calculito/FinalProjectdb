@@ -449,6 +449,18 @@ app.put("/hammerstudents/:hwId", function (req, res) {
       res.status(500).send("something went wrong :( ...");
     });
 });
+///////////  INSERT NEW CLASS  /////////////////
+app.post("/setnewclass/:className", function (req, res) {
+  let className = req.params.className;
+
+  pool
+    .query("insert into class (class_name) values ($1)", [className])
+    .then(() => res.status(200).send("new class set"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
 //////////////   POST    ////////////////
 app.post("/user", (req, res) => {
   user_model
