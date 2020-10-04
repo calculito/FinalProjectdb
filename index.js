@@ -476,7 +476,7 @@ app.post("/setnewuser/:userName", function (req, res) {
       res.status(500).send("something went wrong :( ...");
     });
 });
-//////////////   POST    ////////////////
+//////////////   POST    //////////////
 app.post("/user", (req, res) => {
   user_model
     .createuser(req.body)
@@ -487,7 +487,7 @@ app.post("/user", (req, res) => {
       res.status(500).send(error);
     });
 });
-/////////////   DELETE     ///////////////
+/////////////   DELETE     /////////////
 app.delete("/user/:id", (req, res) => {
   user_model
     .deleteuser(req.params.id)
