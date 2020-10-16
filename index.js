@@ -93,7 +93,7 @@ app.get("/userclassname/:userId", function (req, res) {
       "SELECT class_name  FROM class INNER JOIN users ON class.id=users.class_id where users.id = $1",
       [userId]
     )
-    .then(() => res.status(200).send("classname updated"))
+    .then((result) => res.json(result.rows))
     .catch((error) => {
       console.log(error);
       res.status(500).send("something went wrong :( ...");
