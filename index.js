@@ -86,14 +86,17 @@ app.get("/class", (req, res) => {
     .catch((e) => console.error(e));
 });
 /////////////   get the userrole   /////////////////
-app.get("/userclassname", (req, res) => {
-  user_model
-    .getuserclassname()
-    .then((response) => {
-      res.status(200).send(response);
-    })
+app.get("/userclassname/:userId", function (req, res) {
+  let userId = req.params.userId;
+  pool
+    .query(
+      "SELECT class_name  FROM class INNER JOIN users ON class.id=users.class_id where users.id = $1",
+      [userId]
+    )
+    .then(() => res.status(200).send("classname updated"))
     .catch((error) => {
-      res.status(500).send(error);
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
     });
 });
 ///////////  CHANGE CLASS FOR INSTRUCTORS /////////////////
