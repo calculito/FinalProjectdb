@@ -417,11 +417,11 @@ app.post("/postrecording/:classId", function (req, res) {
     });
 });
 //////////////  DELETE GENERAL LINK    ////////////
-app.delete("/deletegenlink", function (req, res) {
-  const linkdescription = req.body.link;
+app.delete("/deletegenlink/:id", function (req, res) {
+  const id = req.params.id;
   pool
-    .query("DELETE FROM links WHERE id = $1", [linkdescription])
-    .then(() => res.send(`Link ${linkdescription} deleted!`))
+    .query("DELETE FROM links WHERE id = $1", [id])
+    .then(() => res.send(`Link ${id} deleted!`))
     .catch((e) => res.status(400).send("The link can't be deleted!"));
 });
 //////////////  DELETE PERSONAL LINK    ////////////
