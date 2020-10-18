@@ -67,7 +67,7 @@ app.get("/", (req, res) => {
       res.status(500).send(error);
     });
 });
-////////////  get all info users for name, class, role  ///////////////
+////////////  get all info for the user  ///////////////
 app.get("/alld/:userName", (req, res) => {
   let userName = req.params.userName;
   // user_model
@@ -88,6 +88,17 @@ app.get("/alld/:userName", (req, res) => {
   //  .catch((error) => {
   //    res.status(500).send(error);
   //  });
+});
+////////////  get all info users for name, class, role  ///////////////
+app.get("/alldata", (req, res) => {
+  user_model
+    .getusersalldata()
+    .then((response) => {
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
 });
 /////////////  get class for changing the class instructor  ////////////////
 app.get("/class", (req, res) => {
