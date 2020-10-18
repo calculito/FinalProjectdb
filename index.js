@@ -74,7 +74,7 @@ app.get("/alld/:userName", (req, res) => {
   //   .getusersalldata()
   pool
     .query(
-      "SELECT users.id, name, class_id, user_password, user_role, class_name FROM users inner join class on class_id=class.id ORDER BY class_name, user_role, name asc where name = $1",
+      "SELECT users.id, name, class_id, user_password, user_role, class_name FROM users inner join class on class_id=class.id where name = $1 ORDER BY class_name, user_role, name asc",
       [userName]
     )
     .then((result) => res.json(result.rows))
