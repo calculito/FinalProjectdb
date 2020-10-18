@@ -68,15 +68,26 @@ app.get("/", (req, res) => {
     });
 });
 ////////////  get all info users for name, class, role  ///////////////
-app.get("/alld", (req, res) => {
-  user_model
-    .getusersalldata()
-    .then((response) => {
-      res.status(200).send(response);
-    })
+app.get("/alld/:userName", (req, res) => {
+  let userName = req.params.userName;
+  // user_model
+  //   .getusersalldata()
+  pool
+    .query(
+      "SELECT users.id, name, class_id, user_password, user_role, class_name FROM users inner join class on class_id=class.id ORDER BY class_name, user_role, name asc where name = $1",
+      [userName]
+    )
+    .then((result) => res.json(result.rows))
     .catch((error) => {
-      res.status(500).send(error);
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
     });
+  //  .then((response) => {
+  //    res.status(200).send(response);
+  //  })
+  //  .catch((error) => {
+  //    res.status(500).send(error);
+  //  });
 });
 /////////////  get class for changing the class instructor  ////////////////
 app.get("/class", (req, res) => {
