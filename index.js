@@ -489,11 +489,11 @@ app.post("/setnewclass/:className", function (req, res) {
 ///////////  INSERT NEW USER /////////////////
 app.post("/setnewuser/:userName", function (req, res) {
   let userName = req.params.userName;
-
+  const parol = req.body.parol;
   pool
     .query(
-      "insert into users (name, class_id, user_password, user_role) values ($1, 2, $1, 'Student')",
-      [userName]
+      "insert into users (name, class_id, user_password, user_role) values ($1, 2, $2, 'Student')",
+      [userName, parol]
     )
     .then(() => res.status(200).send("new user set"))
     .catch((error) => {
