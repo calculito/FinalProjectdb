@@ -492,7 +492,7 @@ app.post("/setnewuser/:userName", function (req, res) {
 
   pool
     .query(
-      "insert into users (name, class_id, user_password, user_role) values ($1, 6, $1, 'Instructor')",
+      "insert into users (name, class_id, user_password, user_role) values ($1, 2, $1, 'Student')",
       [userName]
     )
     .then(() => res.status(200).send("new user set"))
