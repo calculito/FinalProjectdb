@@ -523,3 +523,15 @@ app.delete("/user/:id", (req, res) => {
       res.status(500).send(error);
     });
 });
+///////////  INSERT which window in behappy  /////////////////
+app.post("/postwindowbehappy/:Id", function (req, res) {
+  let id = req.params.Id;
+
+  pool
+    .query("insert into behappy (window) values ($1)", [id])
+    .then(() => res.status(200).send("ok"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
