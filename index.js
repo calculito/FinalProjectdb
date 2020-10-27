@@ -20,7 +20,9 @@ const user_model = require("./user_model");
 app.use((req, res, next) => {
   const allowedOrigins = [
     "https://migradashy.herokuapp.com",
+    "https://gethappyone.herokuapp.com",
     "http://localhost:3000",
+    "http://gethappyone.herokuapp.com",
     "http://migradashy.herokuapp.com",
   ];
   const origin = req.headers.origin;
