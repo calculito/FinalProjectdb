@@ -537,3 +537,15 @@ app.post("/postwindowbehappy/:Id", function (req, res) {
       res.status(500).send("something went wrong :( ...");
     });
 });
+///////////  INSERT idea in behappy  /////////////////
+app.post("/postwindowbehappy/:Idea", function (req, res) {
+  let idea = req.params.Idea;
+
+  pool
+    .query("insert into behappy (idea) values ($1)", [idea])
+    .then(() => res.status(200).send("ok"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
