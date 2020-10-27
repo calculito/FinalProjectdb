@@ -538,7 +538,7 @@ app.post("/postwindowbehappy/:Id", function (req, res) {
     });
 });
 ///////////  INSERT idea in behappy  /////////////////
-app.post("/postwindowbehappy/:Idea", function (req, res) {
+app.post("/postwindowbehappy/:Id", function (req, res) {
   let id = req.params.Id;
   const idea = req.body.idea;
   pool
