@@ -539,10 +539,10 @@ app.post("/postwindowbehappy/:Id", function (req, res) {
 });
 ///////////  INSERT idea in behappy  /////////////////
 app.post("/postwindowbehappy/:Idea", function (req, res) {
-  let idea = req.params.Idea;
-
+  let id = req.params.Id;
+  const idea = req.body.idea;
   pool
-    .query("insert into behappy (idea) values ($1)", [idea])
+    .query("insert into behappy (wwindow, idea) values ($1, &2)", [id, idea])
     .then(() => res.status(200).send("ok"))
     .catch((error) => {
       console.log(error);
