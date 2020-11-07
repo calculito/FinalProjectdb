@@ -353,7 +353,7 @@ app.post("/postpersonallink/:userId", function (req, res) {
       [personallink, userId]
     )
     .then((result) => {
-      if (result.rowCount.length > 0) {
+      if (result.rowCount > 0) {
         return res
           .status(400)
           .send("A link with this description already exists!");
