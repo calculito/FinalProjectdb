@@ -494,7 +494,7 @@ app.post("/setnewuser/:userName", function (req, res) {
   const parol = req.body.parol;
   const classID = req.body.classID;
   pool.query("select * from users where name=$1", [userName]).then((result) => {
-    if (result.rowCount.length > 0) {
+    if (result.rowCount > 0) {
       return res.status(400).send("An user with this name already exists!");
     } else {
       pool
