@@ -557,3 +557,20 @@ app.post("/postwindowbehappy/:Id", function (req, res) {
       res.status(500).send("something went wrong :( ...");
     });
 });
+///////////  INSERT new note in behappy  /////////////////
+app.post("/postnewnote/:cat", function (req, res) {
+  let cat = req.params.cat;
+  const title = req.body.notetitle;
+  const note = req.body.notetext;
+  const stars = req.body.stars;
+  pool
+    .query(
+      "insert into notes (cat, title, note, stars) values ($1, $2, $3, $4)",
+      [cat, title, note, stars]
+    )
+    .then(() => res.status(200).send("ok"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
