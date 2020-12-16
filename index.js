@@ -563,10 +563,11 @@ app.post("/postnewnote/:cat", function (req, res) {
   const title = req.body.notetitle;
   const note = req.body.notetext;
   const stars = req.body.stars;
+  const savetime = req.body.savetime;
   pool
     .query(
-      "insert into notes (cat, title, note, stars) values ($1, $2, $3, $4)",
-      [cat, title, note, stars]
+      "insert into notes (cat, title, note, stars, savetime) values ($1, $2, $3, $4, $5)",
+      [cat, title, note, stars, savetime]
     )
     .then(() => res.status(200).send("ok"))
     .catch((error) => {
