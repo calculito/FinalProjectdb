@@ -575,3 +575,11 @@ app.post("/postnewnote/:cat", function (req, res) {
       res.status(500).send("something went wrong :( ...");
     });
 });
+///////////  GET all notes in behappy  /////////////////
+
+app.get("/getnotes", (req, res) => {
+  pool
+    .query("select * from notes order by id asc")
+    .then((result) => res.json(result.rows))
+    .catch((e) => console.error(e));
+});
