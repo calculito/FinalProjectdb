@@ -583,3 +583,21 @@ app.get("/getnotes", (req, res) => {
     .then((result) => res.json(result.rows))
     .catch((e) => console.error(e));
 });
+///////////  CHANGE ONE NOTE    /////////////////
+app.put("/changeonenote/:Id", function (req, res) {
+  let Id = req.params.Id;
+  const stars = req.body.stars;
+  const cat = req.body.cat;
+
+  pool
+    .query("UPDATE notes SET stars = $2, cat = $3 WHERE id=$1", [
+      Id,
+      stars,
+      cat,
+    ])
+    .then(() => res.status(200).send("Stars updated"))
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send("something went wrong :( ...");
+    });
+});
