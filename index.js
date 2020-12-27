@@ -588,13 +588,13 @@ app.put("/changeonenote/:Id", function (req, res) {
   let Id = req.params.Id;
   const stars = req.body.stars;
   const cat = req.body.cat;
-
+  const title = req.body.title;
+  const note = req.body.note;
   pool
-    .query("UPDATE notes SET stars = $2, cat = $3 WHERE id=$1", [
-      Id,
-      stars,
-      cat,
-    ])
+    .query(
+      "UPDATE notes SET stars = $2, cat = $3, title=$4, note=$5 WHERE id=$1",
+      [Id, stars, cat, title, note]
+    )
     .then(() => res.status(200).send("Stars updated"))
     .catch((error) => {
       console.log(error);
